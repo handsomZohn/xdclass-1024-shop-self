@@ -12,7 +12,7 @@ spring:
     username: root
     password: root
 
-#配置plus打印sql日志
+#配置plus打印sql日志 拼接好的那种便于使用sql语句定位问题
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
