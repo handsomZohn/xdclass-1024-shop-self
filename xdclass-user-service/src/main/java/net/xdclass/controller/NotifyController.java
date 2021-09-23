@@ -4,6 +4,7 @@ import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.xdclass.service.NotifyService;
 import net.xdclass.utils.CommonUtil;
 import net.xdclass.utils.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class NotifyController {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+
+    @Autowired
+    private NotifyService notifyService;
 
     /**
      * 临时使用10分钟有效，方便测试
@@ -68,6 +72,9 @@ public class NotifyController {
     private String getCapachaKey(HttpServletRequest request) {
         String ipAddr = CommonUtil.getIpAddr(request);
         String userAgent = request.getHeader("User-Agent");
+
+        // key 规范：业务划分，冒号隔离
+        // 防止ip漂移 需要加上IP地址和浏览器的指纹（User-Agent）
         String key = "user-service:captcha:" + CommonUtil.MD5(ipAddr + userAgent);
 
         log.info("ip={}", ipAddr);
