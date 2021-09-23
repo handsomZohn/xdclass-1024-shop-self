@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: xdclass-user-service
+  redis:
+    host: 8.140.157.221
+    password: 123456
+    port: 8000
 
   #数据库配置
   datasource:
@@ -23,7 +27,7 @@ logging:
   level:
     root: INFO
 
-  #邮箱配置
+#邮箱配置
 mail:
   host: smtp.qq.com #发送邮件服务器
   username: zzohn@foxmail.com #发送邮件的邮箱地址
