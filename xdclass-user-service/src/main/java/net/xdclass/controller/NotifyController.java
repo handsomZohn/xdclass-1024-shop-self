@@ -4,6 +4,8 @@ import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.xdclass.enums.BizCodeEnum;
+import net.xdclass.enums.SendCodeEnum;
 import net.xdclass.service.NotifyService;
 import net.xdclass.utils.CommonUtil;
 import net.xdclass.utils.JsonData;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
@@ -47,7 +50,7 @@ public class NotifyController {
         String text = captchaProducer.createText();
         log.info("图形验证码：{}", text);
 
-        redisTemplate.opsForValue().set(getCapachaKey(request), text, CAPTCHA_CODE_EXPIRED, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(getCaptchaKey(request), text, CAPTCHA_CODE_EXPIRED, TimeUnit.SECONDS);
 
         BufferedImage bufferedImage = captchaProducer.createImage(text);
         ServletOutputStream outputStream = null;
@@ -59,6 +62,27 @@ public class NotifyController {
         } catch (IOException e) {
             log.error("获取图形验证码异常:{}", e);
         }
+    }
+
+
+    @ApiOperation("发送邮箱用户注册验证码")
+    @GetMapping("send_code")
+    public JsonData sendRegisterCode(@RequestParam(value = "to") String to,
+                                     @RequestParam(value = "captcha") String captcha,
+                                     HttpServletRequest request) {
+
+        String captchaKey = getCaptchaKey(request);
+        String cacheCaptcha = redisTemplate.opsForValue().get(captchaKey);
+
+
+        if (captcha != null && cacheCaptcha != null && captcha.equalsIgnoreCase(cacheCaptcha)) {
+            redisTemplate.delete(captchaKey);
+            JsonData jsonData = notifyService.sendCode(SendCodeEnum.USER_REGISTER, to);
+            return jsonData;
+
+        } else {
+            return JsonData.buildResult(BizCodeEnum.CODE_CAPTCHA_ERROR);
+        }
 
     }
 
@@ -69,7 +93,7 @@ public class NotifyController {
         return JsonData.buildSuccess(text);
     }
 
-    private String getCapachaKey(HttpServletRequest request) {
+    private String getCaptchaKey(HttpServletRequest request) {
         String ipAddr = CommonUtil.getIpAddr(request);
         String userAgent = request.getHeader("User-Agent");
 
