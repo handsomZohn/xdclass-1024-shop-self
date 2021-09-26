@@ -10,6 +10,7 @@ import net.xdclass.service.NotifyService;
 import net.xdclass.utils.CommonUtil;
 import net.xdclass.utils.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class NotifyController {
 
     @Autowired
+    @Qualifier("captchaProducer")// 注入指定的captchaProducer
     private Producer captchaProducer;
 
     @Autowired
@@ -77,10 +79,12 @@ public class NotifyController {
 
         if (captcha != null && cacheCaptcha != null && captcha.equalsIgnoreCase(cacheCaptcha)) {
             redisTemplate.delete(captchaKey);
+            // 校验图形验证码通过，发送邮箱验证码
             JsonData jsonData = notifyService.sendCode(SendCodeEnum.USER_REGISTER, to);
             return jsonData;
 
         } else {
+            // 校验图形验证码不通过
             return JsonData.buildResult(BizCodeEnum.CODE_CAPTCHA_ERROR);
         }
 
@@ -93,6 +97,13 @@ public class NotifyController {
         return JsonData.buildSuccess(text);
     }
 
+    /**
+     * 获取图形验证码的key key值的组成：
+     * 服务名：功能名称：随机8位
+     * e.g. user-service:captcha:把ip和浏览器签名加密后取出8位
+     * @param request
+     * @return
+     */
     private String getCaptchaKey(HttpServletRequest request) {
         String ipAddr = CommonUtil.getIpAddr(request);
         String userAgent = request.getHeader("User-Agent");

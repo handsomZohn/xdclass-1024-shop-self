@@ -10,11 +10,17 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Properties;
 
 /**
- * 验证码配置类
+ * 图形验证码配置类
+ * @author zzohn
  */
 @Configuration
 public class CaptchaConfig {
 
+    /**
+     * 默认验证码生成器
+     * 此处的@Qualifier("captchaProducer")中的captchaProducer就是调用的地方注入对象的名称[这句话不对哦]
+     * @return
+     */
     @Bean
     @Qualifier("captchaProducer")
     public DefaultKaptcha defaultKaptcha() {

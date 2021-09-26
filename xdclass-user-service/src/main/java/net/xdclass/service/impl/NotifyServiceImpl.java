@@ -33,7 +33,7 @@ public class NotifyServiceImpl implements NotifyService {
     private static final String SUBJECT = "张杨专属验证码";
 
     /**
-     * 验证码的内容
+     * 验证码的内容  可以做成配置化的模板 比如，注册的，找回密码的，修改密码的，等等
      */
     private static final String CONTENT = "您的验证码是%s,有效时间是10分钟,不要告诉任何人,除非忍不住~~";
 
@@ -42,9 +42,23 @@ public class NotifyServiceImpl implements NotifyService {
      */
     private static final int CODE_EXPIRED = 60 * 1000 * 10;
 
+    /**
+     * 前置：判断是否重复发送
+     * 1、存储验证码到缓存
+     * 2、发送邮箱验证码
+     * 后置：存储发送记录
+     * @param sendCodeEnum
+     * @param to
+     * @return
+     */
     @Override
     public JsonData sendCode(SendCodeEnum sendCodeEnum, String to) {
+
+        // 验证码：类型：发送地址
+        // 发送一个验证码，验证码的存在redis中的key code:USER_REGISTER:18310834045@163.com
         String cacheKey = String.format(CacheKey.CHECK_CODE_KEY, sendCodeEnum.name(), to);
+        // 发送一个验证码，验证码的value 054024_1632626122149
+        // 让验证码拼上时间戳  验证码_时间戳  切割之后拿当时发送时的时间戳和当前时间戳作对比，判断是否频繁发送
         String cacheValue = redisTemplate.opsForValue().get(cacheKey);
         //如果不为空，则判断是否60秒内重复发送
         if (StringUtils.isNotBlank(cacheValue)) {
@@ -59,6 +73,11 @@ public class NotifyServiceImpl implements NotifyService {
         String code = CommonUtil.getRandomCode(6);
         String value = code + "_" + CommonUtil.getCurrentTimestamp();
         redisTemplate.opsForValue().set(cacheKey, value, CODE_EXPIRED, TimeUnit.MILLISECONDS);
+
+        // 也可以放入对应的队列里面去
+        // 确保消息可靠投递就可以了 避免分布式事务
+
+        // 检查接收人邮箱地址格式或者手机号码格式并发送
         if (CheckUtil.isEmail(to)) {
             //邮箱验证码
             mailService.sendMail(to, SUBJECT, String.format(CONTENT, code));
@@ -66,7 +85,7 @@ public class NotifyServiceImpl implements NotifyService {
         } else if (CheckUtil.isPhone(to)) {
             //短信验证码
         }
-        // 接收号码号码不合格
+        // 接收号码不合格
         return JsonData.buildResult(BizCodeEnum.CODE_TO_ERROR);
     }
 
