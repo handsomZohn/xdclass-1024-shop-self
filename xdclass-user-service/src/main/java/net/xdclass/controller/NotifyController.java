@@ -52,7 +52,7 @@ public class NotifyController {
         String text = captchaProducer.createText();
         log.info("图形验证码：{}", text);
 
-        redisTemplate.opsForValue().set(getCaptchaKey(request), text, CAPTCHA_CODE_EXPIRED, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(getCaptchaKey(request), text, CAPTCHA_CODE_EXPIRED, TimeUnit.MILLISECONDS);
 
         BufferedImage bufferedImage = captchaProducer.createImage(text);
         ServletOutputStream outputStream = null;
