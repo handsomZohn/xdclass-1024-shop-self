@@ -93,4 +93,7 @@ public class NotifyServiceImpl implements NotifyService {
     public boolean checkCode(SendCodeEnum sendCodeEnum, String to, String code) {
         return false;
     }
+
+    // 考虑到文件存储 是什么类型的，公司的文件存储是那种类型的,选用什么样的存储架构来存储，如何才能最省成本；
+    // 日频率 中等频率 高频率等
 }
