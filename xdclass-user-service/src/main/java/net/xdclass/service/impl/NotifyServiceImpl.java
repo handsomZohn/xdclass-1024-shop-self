@@ -47,6 +47,7 @@ public class NotifyServiceImpl implements NotifyService {
      * 1、存储验证码到缓存
      * 2、发送邮箱验证码
      * 后置：存储发送记录
+     *
      * @param sendCodeEnum
      * @param to
      * @return
@@ -89,11 +90,33 @@ public class NotifyServiceImpl implements NotifyService {
         return JsonData.buildResult(BizCodeEnum.CODE_TO_ERROR);
     }
 
+    /**
+     * 校验验证码
+     *
+     * @param sendCodeEnum
+     * @param to
+     * @param code
+     * @return
+     */
     @Override
     public boolean checkCode(SendCodeEnum sendCodeEnum, String to, String code) {
+        // 验证码的缓存key
+        String cacheKey = String.format(CacheKey.CHECK_CODE_KEY, sendCodeEnum.name(), to);
+        // 根据key 去获取验证码的值
+        String cacheValue = redisTemplate.opsForValue().get(cacheKey);
+
+        // 拿到缓存的值，截取出验证码 作比较
+        if (StringUtils.isNotBlank(cacheValue)) {
+            String cacheCode = cacheValue.split("-")[0];
+            if (cacheCode.equals(code)) {
+                // 删除验证码
+                redisTemplate.delete(cacheKey);
+                return true;
+            }
+        }
         return false;
     }
 
     // 考虑到文件存储 是什么类型的，公司的文件存储是那种类型的,选用什么样的存储架构来存储，如何才能最省成本；
-    // 日频率 中等频率 高频率等
+    // 日访问频率 中等频率 高频率等
 }

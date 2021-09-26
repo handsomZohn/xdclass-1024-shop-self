@@ -38,3 +38,11 @@ mybatis-plus:
 logging:
   level:
     root: INFO
+
+# 阿里云OSS配置
+aliyun:
+  oss:
+    endpoint:
+    access-key-id:
+    access-key-secret:
+    bucketname:
