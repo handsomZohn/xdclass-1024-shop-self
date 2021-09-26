@@ -52,7 +52,6 @@
             <version>1.2.75</version>
         </dependency>
 
-
         <!--swagger ui接口文档依赖-->
         <dependency>
             <groupId>io.springfox</groupId>

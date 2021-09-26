@@ -19,7 +19,7 @@
         </dependency>
 
 
-        <!--验证码kaptcha依赖包-->
+        <!--图形验证码kaptcha依赖包 谷歌开源的一个-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>kaptcha-spring-boot-starter</artifactId>
@@ -30,7 +30,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
-
 
 
         <!--阿里云oss-->
