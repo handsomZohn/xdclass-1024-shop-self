@@ -42,7 +42,7 @@ logging:
 # 阿里云OSS配置
 aliyun:
   oss:
-    endpoint:
-    access-key-id:
-    access-key-secret:
-    bucketname:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: LTAI5t9mDSiNK4jru72E7MWW
+    access-key-secret: V0xy8Xg9UK6eNk8gF0lfjBFvh1nugV
+    bucketname: xdclass-zohn-1024shop-image
