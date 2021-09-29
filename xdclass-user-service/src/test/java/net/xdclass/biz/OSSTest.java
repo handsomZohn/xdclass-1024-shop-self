@@ -35,7 +35,9 @@ public class OSSTest {
     private String bucketname;
 
 
-    private static String key = "<key>";
+    // 这个是官方demo里面给的key不知道干什么的，发现文件上传的oss之后，文件名字变成了这个，
+    // 所以干脆把上传到oss文件的名字变为这个吧~~~聪明如我~~~~
+    private static String key = "123066.txt";
 
 //    傻了 上面的代码不是在OSSConfig里面写过了么
 
@@ -120,7 +122,7 @@ public class OSSTest {
              * Delete an object
              */
             System.out.println("Deleting an object\n");
-            ossClient.deleteObject(bucketname, key);
+            // ossClient.deleteObject(bucketname, key);
 
         } catch (OSSException oe) {
             System.out.println("Caught an OSSException, which means your request made it to OSS, "
@@ -147,8 +149,8 @@ public class OSSTest {
         file.deleteOnExit();
 
         Writer writer = new OutputStreamWriter(new FileOutputStream(file));
-        writer.write("abcdefghijklmnopqrstuvwxyz\n");
-        writer.write("0123456789011234567890\n");
+        writer.write("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\n");
+        writer.write("0123456789011234567890012345678901123456789001234567890112345678900123456789011234567890\n");
         writer.close();
 
         return file;
