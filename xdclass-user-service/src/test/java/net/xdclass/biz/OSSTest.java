@@ -37,7 +37,7 @@ public class OSSTest {
 
     // 这个是官方demo里面给的key不知道干什么的，发现文件上传的oss之后，文件名字变成了这个，
     // 所以干脆把上传到oss文件的名字变为这个吧~~~聪明如我~~~~
-    private static String key = "123066.txt";
+    private static String key = "1230666666.txt";
 
 //    傻了 上面的代码不是在OSSConfig里面写过了么
 
