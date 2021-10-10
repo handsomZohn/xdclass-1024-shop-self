@@ -25,6 +25,12 @@ public class UserController {
     private FileService fileService;
 
 
+    /**
+     * RequestPart 默认大小为1M
+     * postman文件上传测试
+     * @param file
+     * @return
+     */
     @ApiOperation("用户头像上传")
     @PostMapping(value = "upload")
     public JsonData uploadUserImg(@ApiParam(value = "文件上传", required = true) @RequestPart("file") MultipartFile file) {
