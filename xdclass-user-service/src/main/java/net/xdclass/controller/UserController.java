@@ -5,6 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import net.xdclass.enums.BizCodeEnum;
+import net.xdclass.request.UserLoginRequest;
 import net.xdclass.request.UserRegisterRequest;
 import net.xdclass.service.FileService;
 import net.xdclass.service.UserService;
@@ -26,11 +27,20 @@ public class UserController {
 
 
     /**
-     * RequestPart 默认大小为1M
-     * postman文件上传测试
-     * @param file
-     * @return
-     */
+     * 文件上传流程
+     * <p>
+     * * 先上传文件，返回url地址，再和普通表单一并提交（推荐这种,更加灵活，失败率低）
+     * * 文件和普通表单一并提交（设计流程比较多，容易超时和失败）
+     *
+     * @return net.xdclass.utils.JsonData
+     * @Author viy
+     * @Description 用户头像上传接口
+     * @Date 14:24 2021/11/26
+     * @Param [file] RequestPart 默认大小为1M SpringBoot最大文件上传为1M
+     * <p>
+     * * @requestPart注解 接收文件以及其他更为复杂的数据类型
+     * * 比如 XXX(@RequestPart("file") MultipartFile file,  @RequestPart("userVO") UserVO userVO) 复杂协议
+     **/
     @ApiOperation("用户头像上传")
     @PostMapping(value = "upload")
     public JsonData uploadUserImg(@ApiParam(value = "文件上传", required = true) @RequestPart("file") MultipartFile file) {
@@ -53,6 +63,20 @@ public class UserController {
 
         JsonData jsonData = userService.register(registerRequest);
         return jsonData;
+    }
+
+    /**
+     * @return net.xdclass.utils.JsonData
+     * @Author viy
+     * @Description 用户登录接口
+     * @Date 17:28 2021/11/26
+     * @Param [userLoginRequest]
+     **/
+    @ApiOperation("用户登录")
+    @PostMapping("/login")
+    public JsonData login(@ApiParam("用户登录对象") @RequestBody UserLoginRequest userLoginRequest) {
+        JsonData login = userService.login(userLoginRequest);
+        return login;
     }
 
 }

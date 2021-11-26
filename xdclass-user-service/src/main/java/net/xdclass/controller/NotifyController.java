@@ -46,12 +46,20 @@ public class NotifyController {
      */
     private static final long CAPTCHA_CODE_EXPIRED = 60 * 1000 * 10;
 
+    /**
+     * @return void
+     * @Author viy
+     * @Description 页面图形验证码获取
+     * @Date 15:31 2021/11/26
+     * @Param [request, response]
+     **/
     @ApiOperation("获取图形验证码")
     @GetMapping("/captcha")
     public void getCapt(HttpServletRequest request, HttpServletResponse response) {
         String text = captchaProducer.createText();
         log.info("图形验证码：{}", text);
 
+        // 生成的图形验证码 直接存到redis
         redisTemplate.opsForValue().set(getCaptchaKey(request), text, CAPTCHA_CODE_EXPIRED, TimeUnit.MILLISECONDS);
 
         BufferedImage bufferedImage = captchaProducer.createImage(text);
@@ -67,6 +75,13 @@ public class NotifyController {
     }
 
 
+    /**
+     * @return net.xdclass.utils.JsonData
+     * @Author viy
+     * @Description 第一步、校验图形验证码，第二步、给用户邮箱发送注册验证码
+     * @Date 15:28 2021/11/26
+     * @Param [to, captcha, request]
+     **/
     @ApiOperation("发送邮箱用户注册验证码")
     @GetMapping("send_code")
     public JsonData sendRegisterCode(@RequestParam(value = "to") String to,
@@ -78,6 +93,7 @@ public class NotifyController {
 
 
         if (captcha != null && cacheCaptcha != null && captcha.equalsIgnoreCase(cacheCaptcha)) {
+            // 验证码校验通过 直接从redis中删除
             redisTemplate.delete(captchaKey);
             // 校验图形验证码通过，发送邮箱验证码
             JsonData jsonData = notifyService.sendCode(SendCodeEnum.USER_REGISTER, to);
@@ -101,6 +117,7 @@ public class NotifyController {
      * 获取图形验证码的key key值的组成：
      * 服务名：功能名称：随机8位
      * e.g. user-service:captcha:把ip和浏览器签名加密后取出8位
+     *
      * @param request
      * @return
      */

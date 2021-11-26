@@ -48,6 +48,8 @@ public class NotifyServiceImpl implements NotifyService {
      * 2、发送邮箱验证码
      * 后置：存储发送记录
      *
+     * 验证码_当前的时间戳
+     *
      * @param sendCodeEnum
      * @param to
      * @return
@@ -107,7 +109,7 @@ public class NotifyServiceImpl implements NotifyService {
 
         // 拿到缓存的值，截取出验证码 作比较
         if (StringUtils.isNotBlank(cacheValue)) {
-            String cacheCode = cacheValue.split("-")[0];
+            String cacheCode = cacheValue.split("_")[0];
             if (cacheCode.equals(code)) {
                 // 删除验证码
                 redisTemplate.delete(cacheKey);

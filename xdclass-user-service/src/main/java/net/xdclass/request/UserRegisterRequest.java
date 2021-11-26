@@ -16,7 +16,6 @@ public class UserRegisterRequest {
 
 
     @ApiModelProperty(value = "头像", example = "https://xdclass-1024shop-img.oss-cn-shenzhen.aliyuncs.com/user/2021/02/03/39473aa1029a430298ac2620dd819962.jpeg")
-    @JsonProperty("head_img")
     private String headImg;
 
     @ApiModelProperty(value = "用户个人性签名", example = "人生需要动态规划，学习需要贪心算法")

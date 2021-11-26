@@ -92,7 +92,7 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
-        <!--用于加密-->
+        <!--用于加密 信息-->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
