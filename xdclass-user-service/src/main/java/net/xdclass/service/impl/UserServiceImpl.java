@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -36,8 +35,8 @@ public class UserServiceImpl implements UserService {
     /**
      * 用户注册
      * * 邮箱验证码验证
-     * * 密码加密（TODO）
-     * * 账号唯一性检查(TODO)
+     * * 密码加密
+     * * 账号唯一性检查
      * * 插入数据库
      * * 新注册用户福利发放(TODO)
      *
@@ -85,9 +84,13 @@ public class UserServiceImpl implements UserService {
      * @Description 用户登录方法  登录之后 生成token放入缓存 供其他服务做身份认证使用
      * @Date 17:44 2021/11/26
      * @Param [userLoginRequest]
+     * 1、根据Mail去找有没这记录
+     * 2、有的话，则用秘钥+用户传递的明文密码，进行加密，再和数据库的密文进行匹配
      **/
     @Override
     public JsonData login(UserLoginRequest userLoginRequest) {
+
+        // 根据mail查询
         List<UserDO> list = userMapper.selectList(
                 new QueryWrapper<UserDO>().eq("mail", userLoginRequest.getMail()));
 
