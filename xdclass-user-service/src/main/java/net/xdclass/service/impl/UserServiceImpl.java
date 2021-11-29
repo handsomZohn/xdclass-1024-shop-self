@@ -5,12 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import net.xdclass.enums.BizCodeEnum;
 import net.xdclass.enums.SendCodeEnum;
 import net.xdclass.mapper.UserMapper;
+import net.xdclass.model.LoginUser;
 import net.xdclass.model.UserDO;
 import net.xdclass.request.UserLoginRequest;
 import net.xdclass.request.UserRegisterRequest;
 import net.xdclass.service.NotifyService;
 import net.xdclass.service.UserService;
 import net.xdclass.utils.CommonUtil;
+import net.xdclass.utils.JWTUtil;
 import net.xdclass.utils.JsonData;
 import net.xdclass.vo.UserVO;
 import org.apache.commons.codec.digest.Md5Crypt;
@@ -99,8 +101,17 @@ public class UserServiceImpl implements UserService {
             UserDO userDO = list.get(0);
             String cryptPwd = Md5Crypt.md5Crypt(userLoginRequest.getPwd().getBytes(), userDO.getSecret());
             if (cryptPwd.equals(userDO.getPwd())) {
-                // 生成token 令牌
-                return JsonData.buildSuccess();
+                LoginUser loginUser = new LoginUser();
+                BeanUtils.copyProperties(userDO, loginUser);
+                String token = JWTUtil.geneJsonWebToken(loginUser);
+
+                // accessToken
+                // accessToken的过期时间
+                // UUID生成一个token
+                // String refreshToken = CommonUtil.generateUUID();
+                // redisTemplate.opsForValue().set(refreshToken,"1",1000*60*60*24*30);
+
+                return JsonData.buildSuccess(token);
             }
 
             // 密码错误
