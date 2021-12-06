@@ -17,4 +17,6 @@ public class UserLoginRequest {
     private String pwd;
 
 
+    @ApiModelProperty(value = "ip", example = "127.0.0.1")
+    private String ip;
 }

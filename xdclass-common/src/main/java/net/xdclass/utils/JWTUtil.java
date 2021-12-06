@@ -50,6 +50,8 @@ public class JWTUtil {
                 .claim("id", loginUser.getId())
                 .claim("name", loginUser.getName())
                 .claim("mail", loginUser.getMail())
+                // 加入网络地理位置
+                // .claim("ip", loginUser.getIp())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE))
                 .signWith(SignatureAlgorithm.HS256, SECRET).compact();
@@ -61,11 +63,11 @@ public class JWTUtil {
 
     /**
      * 校验token的方法
-     *
+     * token中加入网络地址信息后 再校验ip地址
      * @param token
      * @return
      */
-    public static Claims checkJWT(String token) {
+    public static Claims checkJWT(String token/*, String ipaddress*/) {
 
         try {
             final Claims claims = Jwts.parser()

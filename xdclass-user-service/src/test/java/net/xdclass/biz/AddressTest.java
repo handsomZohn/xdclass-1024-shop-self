@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.xdclass.UserApplication;
 import net.xdclass.model.AddressDO;
 import net.xdclass.service.AddressService;
+import net.xdclass.vo.AddressVO;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,7 @@ public class AddressTest {
 
     @Test
     public void testAddressDetail(){
-        AddressDO detail = addressService.detail(1L);
+        AddressVO detail = addressService.detail(1L);
         log.info(detail.toString());
         Assert.assertNotNull(detail);
     }

@@ -19,8 +19,17 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     public static ThreadLocal<LoginUser> threadLocal = new ThreadLocal<>();
 
+    /**
+     * @return boolean
+     * @Author viy
+     * @Description 进入目标controller方法之前
+     * @Date 14:19 2021/11/30
+     * @Param [request, response, handler]
+     **/
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        // 多种方式获取一下token
         String accessToken = request.getHeader("token");
         if (accessToken == null) {
             accessToken = request.getParameter("token");
@@ -45,11 +54,20 @@ public class LoginInterceptor implements HandlerInterceptor {
                     .mail(mail)
                     .build();
 
+
+            // 通过attribute传递用户信息
+            // request.setAttribute("loginUser", loginUser);
+            // request.getAttribute("loginUser");
+
+
+            // 通过threadlocal传递用户登录信息
             threadLocal.set(loginUser);
+            // LoginUser loginUser1 = threadLocal.get();
             return true;
         }
 
-        return HandlerInterceptor.super.preHandle(request, response, handler);
+        CommonUtil.sendJsonMessage(response, JsonData.buildResult(BizCodeEnum.ACCOUNT_UNLOGIN));
+        return false;
     }
 
 

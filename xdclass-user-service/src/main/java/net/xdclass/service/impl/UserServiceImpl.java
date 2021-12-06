@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import net.xdclass.enums.BizCodeEnum;
 import net.xdclass.enums.SendCodeEnum;
+import net.xdclass.interceptor.LoginInterceptor;
 import net.xdclass.mapper.UserMapper;
 import net.xdclass.model.LoginUser;
 import net.xdclass.model.UserDO;
@@ -123,9 +124,20 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * @return net.xdclass.vo.UserVO
+     * @Author viy
+     * @Description 查询用户详情
+     * @Date 16:49 2021/11/30
+     * @Param []
+     **/
     @Override
     public UserVO findUserDetail() {
-        return null;
+        LoginUser loginUser = LoginInterceptor.threadLocal.get();
+        UserDO userDO = userMapper.selectOne(new QueryWrapper<UserDO>().eq("id", loginUser.getId()));
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(userDO, userVO);
+        return userVO;
     }
 
     /**

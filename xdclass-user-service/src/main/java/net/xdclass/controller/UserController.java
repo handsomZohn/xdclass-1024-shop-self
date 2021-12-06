@@ -9,10 +9,14 @@ import net.xdclass.request.UserLoginRequest;
 import net.xdclass.request.UserRegisterRequest;
 import net.xdclass.service.FileService;
 import net.xdclass.service.UserService;
+import net.xdclass.utils.CommonUtil;
 import net.xdclass.utils.JsonData;
+import net.xdclass.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Api(tags = "用户模块")
 @RestController
@@ -74,12 +78,30 @@ public class UserController {
      **/
     @ApiOperation("用户登录")
     @PostMapping("/login")
-    public JsonData login(@ApiParam("用户登录对象") @RequestBody UserLoginRequest userLoginRequest) {
+    public JsonData login(@ApiParam("用户登录对象") @RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
+
+        String ipAddr = CommonUtil.getIpAddr(request);
+        userLoginRequest.setIp(ipAddr);
         JsonData login = userService.login(userLoginRequest);
         return login;
     }
 
-    //    刷新token的方案
+
+    /**
+     * @Author viy
+     * @Description 个人信息查询
+     * @Date 16:51 2021/11/30
+     * @Param []
+     * @return net.xdclass.utils.JsonData
+     **/
+    @ApiOperation("个人信息查询")
+    @GetMapping("detail")
+    public JsonData detail(){
+        UserVO userDetail = userService.findUserDetail();
+        return JsonData.buildSuccess(userDetail);
+    }
+
+//    刷新token的方案
 //    @PostMapping("refresh_token")
 //    public JsonData getRefreshToken(Map<String,Object> param){
 //

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+// 启用builder模式
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,4 +32,9 @@ public class LoginUser {
      * 邮箱
      */
     private String mail;
+
+    /**
+     * IP地址
+     */
+    private String ip;
 }
