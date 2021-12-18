@@ -94,7 +94,7 @@ public class CouponServiceImpl implements CouponService {
 
 
         //扣减库存  TODO
-        int rows = 1; //couponMapper.reduceStock(couponId);
+        int rows = couponMapper.reduceStock(couponId);
 
         if (rows == 1) {
             //库存扣减成功才保存记录

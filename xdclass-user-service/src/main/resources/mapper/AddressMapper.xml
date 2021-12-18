@@ -10,7 +10,7 @@
         <result column="receive_name" property="receiveName" />
         <result column="phone" property="phone" />
         <result column="province" property="province" />
-        <result column="city" property="city" />
+        <result column="city" property="city"/>
         <result column="region" property="region" />
         <result column="detail_address" property="detailAddress" />
         <result column="create_time" property="createTime" />

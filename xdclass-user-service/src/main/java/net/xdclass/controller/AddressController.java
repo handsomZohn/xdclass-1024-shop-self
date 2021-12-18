@@ -4,6 +4,7 @@ package net.xdclass.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import net.xdclass.enums.BizCodeEnum;
 import net.xdclass.request.AddressAddRequest;
 import net.xdclass.service.AddressService;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * 用户地址控制类
  */
+@Slf4j
 @Api(tags = "用户地址模块")
 @RestController
 @RequestMapping("/api/address/v1/")
@@ -37,6 +39,9 @@ public class AddressController {
 //        if (address_id == 1) {
 //            throw new BizException(900, "测试自定义业务异常");
 //        }
+        detail = new AddressVO();
+        detail.setDetailAddress("信息路48号-北京体育大学-五道口职业技术学院------");
+        log.info("地址对象内容为:{}", detail);
         return detail;
     }
 
