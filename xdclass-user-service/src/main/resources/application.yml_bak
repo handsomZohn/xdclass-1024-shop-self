@@ -5,7 +5,7 @@ spring:
   application:
     name: xdclass-user-service
   redis:
-    host: 192.168.31.52
+    host: 8.140.157.221
     password: 123456
     port: 8000
   mail:
@@ -24,9 +24,9 @@ spring:
   #数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.31.52:3306/xdclass_user?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://8.140.157.221:3306/xdclass_user?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: Szfore_68638
+    password: Sql@#123456
 
 #配置plus打印sql日志 拼接好的那种便于使用sql语句定位问题
 mybatis-plus:

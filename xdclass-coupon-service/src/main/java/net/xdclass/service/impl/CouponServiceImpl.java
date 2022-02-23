@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -82,8 +84,23 @@ public class CouponServiceImpl implements CouponService {
         return pageMap;
     }
 
+    /**
+     * 不加分布式锁的时候存在单人超领劵的问题==时间暂停思维
+     *
+     * @param couponId
+     * @param category
+     * @return
+     */
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public JsonData addCoupon(long couponId, CouponCategoryEnum category) {
+
+//         synchronized、lock等，锁在当前进程内、集群部署下依旧存在问题
+//        synchronized (this){
+//        }
+        // 在集群中，同一时间，同一个方法只能被一台机器的一个线程执行。
+
+
         LoginUser loginUser = LoginInterceptor.threadLocal.get();
 
 
@@ -186,6 +203,10 @@ public class CouponServiceImpl implements CouponService {
     }
 
 
+    /**
+     * lua脚本加锁
+     * @param couponId
+     */
     private void lockDemo(String couponId) {
         String uuid = CommonUtil.generateUUID();
         String lockKey = "lock:coupon:" + couponId;
