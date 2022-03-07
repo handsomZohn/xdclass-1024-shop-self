@@ -30,6 +30,12 @@ public class AppConfig {
     @Value("${spring.redis.password}")
     private String redisPwd;
 
+    @Value("${rsa.publicKey}")
+    private String publicKey;
+
+    @Value("${rsa.privateKey}")
+    private String privateKey;
+
 
     @Bean
     public RedissonClient redissonClient() {
