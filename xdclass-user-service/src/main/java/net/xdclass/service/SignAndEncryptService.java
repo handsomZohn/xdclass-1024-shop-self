@@ -1,5 +1,8 @@
 package net.xdclass.service;
 
+import net.xdclass.request.VerifySignRequest;
+
+
 public interface SignAndEncryptService {
-    void startProcess();
+    void startProcess(VerifySignRequest vsr);
 }

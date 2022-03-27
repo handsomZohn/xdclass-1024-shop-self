@@ -2,6 +2,7 @@ package net.xdclass.controller;
 
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import net.xdclass.request.VerifySignRequest;
 import net.xdclass.service.SignAndEncryptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +24,8 @@ public class SignAndEncryptController {
     SignAndEncryptService signAndEncryptService;
 
     @PostMapping("/verify")
-    public void startProcess(@RequestBody Object obj){
+    public void startProcess(@RequestBody VerifySignRequest vsr) {
         System.out.println("签名测试模块-验签::======================================");
-        signAndEncryptService.startProcess();
+        signAndEncryptService.startProcess(vsr);
     }
 }

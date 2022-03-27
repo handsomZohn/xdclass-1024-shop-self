@@ -1,6 +1,7 @@
 package net.xdclass.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import net.xdclass.config.AppConfig;
 import net.xdclass.model.UserFamilyMemberInfo;
@@ -15,10 +16,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName SignAndEncryptServiceImpl
@@ -46,6 +44,8 @@ public class SignAndEncryptServiceImpl implements SignAndEncryptService {
      */
     @Override
     public void startProcess() {
+
+        // 要加签的那个字符串
         String s = this.dataBuild();
 
         /**
@@ -53,6 +53,7 @@ public class SignAndEncryptServiceImpl implements SignAndEncryptService {
          */
         String sign = null;
         try {
+            System.out.println("加签开始===================");
             sign = RSAUtils.sign(s.getBytes(), privateKey);
         } catch (Exception e) {
             log.error("加签失败");
@@ -73,7 +74,6 @@ public class SignAndEncryptServiceImpl implements SignAndEncryptService {
 
 
     public String dataBuild() {
-
         UserInfo userInfo = new UserInfo();
         userInfo.setName("张娃");
         userInfo.setAge("1");
@@ -91,7 +91,22 @@ public class SignAndEncryptServiceImpl implements SignAndEncryptService {
         userFamilyMemberInfos.add(userFamilyMemberInfo);
         userInfo.setUserFamilyMemberInfos(userFamilyMemberInfos);
         Object o = JSONArray.toJSON(userInfo);
+
         String string = o.toString();
+
+        // 转为jsonObject 并放入map
+        JSONObject jsonObject = JSONObject.parseObject(string);
+        HashMap map = new HashMap<>(jsonObject);
+
+        // 排序
+        Map sortedMap = new TreeMap(map);
+
+        // 拼接字符串
+        /*StringBuffer stringBuffer = new StringBuffer();
+        for (Map.Entry<String, String> entry: sortedMap.entrySet()){
+
+        }*/
+
         return string;
     }
 
