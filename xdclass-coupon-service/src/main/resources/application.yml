@@ -9,6 +9,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.31.52:3306/xdclass_coupon?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+#    url: jdbc:mysql://192.168.238.137:3306/xdclass_coupon?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: Szfore_68638
 
@@ -16,6 +17,7 @@ spring:
   #redis 配置
   redis:
     host: 192.168.31.52
+#    host: 192.168.238.137
     password: 123456
     port: 8000
 
@@ -30,5 +32,10 @@ mybatis-plus:
 logging:
   level:
     root: INFO
+
+
+# rsa密钥对
+rsa.publicKey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCLgr7T/g/KD5qnOYujTJaJhaTPpKt7PtNTLjBiU34agM/0Vxz9TkSUfyto/RUKwYqH2q4cV1gJpvZiv2Z0JxWYPmABDg9aHJY+2fKzxG/TPG3G6/pLdK7PuCp7TN4fLV4a+6zKuSMPV5dIR5jC/bB4kTxM9jYdvMxm+rM0XFKzRQIDAQAB";
+rsa.privateKey: MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIuCvtP+D8oPmqc5i6NMlomFpM+kq3s+01MuMGJTfhqAz/RXHP1ORJR/K2j9FQrBiofarhxXWAmm9mK/ZnQnFZg+YAEOD1oclj7Z8rPEb9M8bcbr+kt0rs+4KntM3h8tXhr7rMq5Iw9Xl0hHmML9sHiRPEz2Nh28zGb6szRcUrNFAgMBAAECgYBl54/6i8b+wp0l7zvXgXcoZu13GwKDWOXGCaQf/nrLYzIDeapcQNKJYcbUvqCjJbJJ/+tUGlzdWA77HHH7AB2d6/3c/1tHW31YnGMJfUaIHebsaA3rDmk7v3YUO4EbSRtKo5Byf1vpyLsmFAkzEsK4VUkZ7qZMWv5BQR2lvvylVQJBANbWIxqMM60qZubp+UMLSWk7b6a+FLgw0GbTLdlQYRTrtslcHVsh/qrWUfiE8BHHfBw2FgfRd7poe0SFAlMRPuMCQQCmPdVYeFwo1qcZeE3Aubmoa43p1fnNgyrvbOtrYsvX4uG5WCBRMbfBTMzhFZfqR7hi2xWL/SIGwu/84gt8i3W3AkEAwumG8bgPzmTw9UGD33rnAK1nD+3WmIHZIeEo8MfHPJbawHdtPthp2A8YUZQyxr6o8GN1u2Qk7x+J7tGKGVlFJwJBAIrwAL/JEBUdmViDIFCjqJQnF9tH91gYeSjTmkoMrxsGRur1yUSyzcXjHxQ7TNUEDgmo2vA9plOKVrK+ZSU5FS8CQAYy2UWzkmaHtBoGyyyXUwz442bP76wFmhljnHasiUfwEYIZjjwAiqtJoSofOnRV1XyL+JYpfqbK0n7ukQ73dxY=
 
 
