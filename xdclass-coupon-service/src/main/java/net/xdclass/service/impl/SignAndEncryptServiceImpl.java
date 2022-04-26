@@ -3,7 +3,6 @@ package net.xdclass.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import net.xdclass.config.AppConfig;
 import net.xdclass.model.UserFamilyMemberInfo;
 import net.xdclass.model.UserInfo;
 import net.xdclass.service.SignAndEncryptService;
@@ -12,8 +11,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
